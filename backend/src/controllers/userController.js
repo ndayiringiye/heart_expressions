@@ -8,4 +8,15 @@ export const createUser = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
+
+export const getSingleUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .populate('subscribers', 'username avatar')
+      .populate('subscriptions', 'username avatar');
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({ error: 'User not found' });
+  }
+};
